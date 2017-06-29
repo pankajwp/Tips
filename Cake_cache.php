@@ -1,5 +1,3 @@
-// Element Cache
-
 // First creae a cache configuration in bootstrap.php
 Cache::config('long', array(
     'engine' => 'File',
@@ -8,6 +6,7 @@ Cache::config('long', array(
     'path' => CACHE . 'long' . DS,
 ));
 
+////// Element Cache ///////
 $header = Cache::read('elementHeader', 'long');
 if(!$header){
 	echo "its header";
@@ -17,7 +16,7 @@ if(!$header){
 echo $header;
 
 
-// Query cache
+///////// Query cache ///////
 $globalSettings = Cache::read('globalSettings', 'long');
   if (!$globalSettings) {
     echo "hii";
