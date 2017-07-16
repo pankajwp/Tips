@@ -1,5 +1,8 @@
 // Using Counter Cache to keep counts of comments per Posts
 // column in posts table "comment_count"
+
+Use this in PostComment model
+
 	public $belongsTo = array(
         'Posts' => array(
 						'className' => 'Post',
