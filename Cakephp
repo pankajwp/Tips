@@ -1,0 +1,10 @@
+// Using Counter Cache to keep counts of comments per Posts
+// column in posts table "comment_count"
+	public $belongsTo = array(
+        'Posts' => array(
+						'className' => 'Post',
+						 // 'conditions' => [],
+						'foreignKey' => 'post_id',
+            'counterCache' => 'comment_count',
+        )
+	);
