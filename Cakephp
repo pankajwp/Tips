@@ -1,13 +1,318 @@
-// Using Counter Cache to keep counts of comments per Posts
-// column in posts table "comment_count"
+<?php 
+/* method to redirect to a view page */
 
-Use this in PostComment model
+$this->redirect("view/recharges/payment");
 
-	public $belongsTo = array(
-        'Posts' => array(
-						'className' => 'Post',
-						 // 'conditions' => [],
-						'foreignKey' => 'post_id',
-            'counterCache' => 'comment_count',
-        )
+
+/* Setting up a primary key for table other than id */
+
+we will use the attribute of Model called primaryKey :
+
+ex:- class Example extends AppModel 
+{
+    // example_id is the field name in the database
+    public $primaryKey = 'example_id';
+}
+
+
+/* To load a model in between of code if not assign in " public $uses " */
+
+$this->loadModel('Setting');
+
+
+/* To use a view page which doesnt have a method created we use the follwing */
+
+controller name -> RechargesController.php
+View page path -> View/Recharge/pay_now.ctp
+
+
+so the code will be: - $this->render('pay_now');
+
+
+/* To View queries related to particular model */
+
+$log = $this->modelName->getDataSource()->getLog(false, false);
+debug($log);die;
+
+
+/* To open a tab out the of three tab whose class is "wallet" on page load */
+
+$this->redirect(array('controller'=>'ControllersName','action'=>'MethodName','wallet'));
+
+
+here wallet is one of the three tab whose class is "wallet".
+
+/* To show a flash message at a particular place in form */
+
+In Your view page :- Just use $this->Sessoin->flash('myMessage');
+
+In Your Controller set :- 
+  $this->Session->setFlash(__("Please enter the valid amount.",true),'default',array('class'=>'error effect7'),'myMessage');
+ 
+
+/* To Use redirect use Header location in view ctp page */
+
+
+As you cant use $this->redirect in view ctp page so use :
+
+$this->response->header('Location',$url);
+
+$url = "http://google.com" or any " method name present in the page controller "
+
+
+**************************** Stop a View page from caching *************************
+
+Use in the page controller of view
+
+function beforeRender() 
+	
+{
+     
+$this->response->disableCache();
+	
+}
+
+?>
+<?php
+/* To send a form data for validation manually */
+
+
+Model name = BusReservation;
+
+In The controllers Method which will be form action :-
+
+$this->BusReservation->set($this->request->data);
+			
+$this->BusReservation->resetValidationBusRule();
+
+
+Now In Model i.e  BusReservation :-
+
+public function resetValidationBusRule(){
+$this->validate=$this->validateBusServiceList;
+}
+
+public $validateBusServiceList = array(
+	'sourceList' => array(
+				'rule' => 'notEmpty',
+		'required' => true,
+		'allowEmpty' => false,
+		'message' => 'Please select sourceList.'
+		),
+		'destinationList' => array(		
+		'rule' => 'notEmpty',
+		'required' => true,
+		'allowEmpty' => false,
+		'message' => 'Please select Destination.'
+		),
+	
+		'datepicker' => array(
+			'required' =>array(
+            	'rule' => array('date', 'ymd'),
+            	'message' => 'You must provide a Date of Birth in YYYY-MM-DD format.',
+            	'allowEmpty' => false
+				),
+			'checkdate' => array(
+				'rule' => array('checkdate')			
+			)	
+       	)		
+		
 	);
+
+	
+/* How can I generate method in controller without having/creating/getting the view.ctp file */
+
+In your controller method :- 
+ 
+$this->autoRender = false;
+
+
+
+/* How to get the name of current view method of controller in view.ctp */
+
+$this->name
+
+
+/* Loading Models in component */
+$this->Recharge = ClassRegistry::init('Recharge');
+		$this->SmsApi = ClassRegistry::init('SmsApi');
+		$this->SmsReport = ClassRegistry::init('SmsReport');
+
+
+/* Calling a method of controller in element ctp page */
+$this->requestAction('controllerName/methodName/'.$param);
+
+
+/* Get Last inserted id of a model */
+echo $this->Model->id;
+echo $this->ModelName->getInsertID();
+echo $this->ModelName->getLastInsertID();
+
+/* Get client ip address */
+$this->request->clientIp();
+
+
+/* Updating Session data  */
+$this->Session->write('session','value');
+
+
+
+/* Including a blog in cake php on the root folder... i.e along with app folder of cake */
+
+add the blog folder.. and in the .htaccess write..
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+# Commenting off the rewritebase
+#  RewriteBase        /beta/app/
+RewriteCond %{REQUEST_URI} !/blog(.*)
+RewriteRule    ^$    /beta/app/webroot/    [L]
+RewriteCond %{REQUEST_URI} !/blog(.*)
+RewriteRule    (.*) /beta/app/webroot/$1    [L]
+</IfModule>
+
+then install and enjoy
+
+
+
+/* /* CakePHP: Setting default value on a select with optgroups  */ */
+
+$options = array('noida'=>'Noida','delhi'=>'Delhi','ghaziabad'=>'Ghaziabad');
+echo $this->form->input('area',array('type'=>'select','options'=>$options,'default'=>'delhi','empty'=>'-- Please choose an area --'));
+
+
+/* In order to write a NOT sql query */
+$this->User->find('all', array( 
+    'conditions' => array('not' => array('User.sex' => null))
+));
+
+
+/* Setting form action to different method other than the view file name */
+
+Here the view ctp name is admin_gateway_settings and it goes to is controller method change_payment_options.
+
+echo $this->Form->create('Setting',array('action'=>'change_payment_options', 'default' => false,'autocomplete'=>'off'));
+
+
+/* Using server to send mail in cakephp */
+function serverMail($to,$from,$subject,$content='',$template='default')
+	{
+		// pr($content);die;
+		$Email = new CakeEmail();
+		$Email->template($template)
+    ->emailFormat('html')
+    ->to($to)
+    ->viewVars(array('content' =>$content))  // passing content variable to email template
+    ->from(array('info@demo-7.com' =>$from)) // specify the domain name using
+    ->subject($subject)
+    ->send();
+	}	
+
+	/* Extract data from array */
+
+$third_sections = Set::extract('/home[title=third]', $home_sections);
+the abhove wiil extract all the data arrays where title = third
+	
+
+	/**************** Load model in helper  ****************/
+	public function loadModel($modelClass = null, $id = null) {
+    if ($modelClass === null) {
+        $modelClass = $this->modelClass;
+    }
+
+    $this->uses = ($this->uses) ? (array) $this->uses : array();
+    if (!in_array($modelClass, $this->uses, true)) {
+        $this->uses[] = $modelClass;
+    }
+
+    list($plugin, $modelClass) = pluginSplit($modelClass, true);
+
+    $this->{$modelClass} = ClassRegistry::init(array(
+                'class' => $plugin . $modelClass, 'alias' => $modelClass, 'id' => $id
+    ));
+    if (!$this->{$modelClass}) {
+        throw new MissingModelException($modelClass);
+    }
+    return true;
+	}
+	
+	Note: Now use $this->loadModel('ModelName') just like in controller.
+	
+	/* TO add css to header */
+	$this->Html->css('styles', array('inline' => false))
+	
+	/* HasMany model relation on fly */
+	$this->Training->hasMany = array('TrainingApproval'=>array(
+					'className'=>'TrainingApproval',
+					'foreignKey'=>'training_id',
+					'fields'=>array('user_id'),
+					'conditions'=>array("TrainingApproval.attendance = 't'")
+		));
+		
+	/* belongsTo model relation onfly */
+	
+		$this->Training->bindModel(array('belongsTo'=>array('CommonTraining'=>array('className'=>'CommonTraining','foreignKey'=>'tni_id'))));
+	
+	/* Using CSRF security for cakephp particular action form */
+	public $components = array('Security');
+
+	private $disabledCSRFForActions = array("test"); // here Test is action name
+
+	public function beforeFilter() {
+			parent::beforeFilter();
+			$this->Security->unlockedActions = array('delete_posts','signup');
+			$this->Security->blackHoleCallback = 'blackHole'; // blackhole function
+					
+									OR
+							
+			if (isset($this->Security) && in_array($this->action, $disabledCSRFForActions) {
+							$this->Security->validatePost = false;
+							$this->Security->enabled = false;
+							$this->Security->csrfCheck = false;
+			}
+	}
+	
+	
+	public function blackHole($type) {
+    switch ($type) {
+        case "csrf":
+            // No cross form tampering, set flash, reload current window
+            // $this->Session->setFlash(__('The request has been black-holed.'));
+            $this->redirect($this->referer());
+            break;
+        case "auth":
+            // Indicates a form validation error, or a controller/action mismatch error.
+            // $this->Session->setFlash(__('The request has been black-holed.'));
+            $this->redirect($this->referer());
+            break;
+        case "secure":
+            // Force SSL certificate
+            $this->redirect('https://'.env('SERVER_NAME').$this-> here);
+            break;
+    }
+	}
+	
+	
+	// TO unloack a particular field from the view form
+	$this->Form->unlockField('Model.fieldName');
+	
+	
+	/* Using postlink for security */
+	echo $this->Form->postLink("<button><i class='fa fa-thumbs-o-up'></i> Invite</button>",['controller'=>'users', 'action'=>'invite', $user['User']['user_id']], ['class'=>'send_invitation', 'escape'=>false]);
+	
+	// Using Counter Cache to keep counts of comments per Posts
+	// column in posts table "comment_count"
+
+	Use this in PostComment model
+
+		public $belongsTo = array(
+					'Posts' => array(
+							'className' => 'Post',
+							 // 'conditions' => [],
+							'foreignKey' => 'post_id',
+							'counterCache' => 'comment_count',
+					)
+	);
+	
+	
+?>
