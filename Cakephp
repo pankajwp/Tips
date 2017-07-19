@@ -314,5 +314,8 @@ the abhove wiil extract all the data arrays where title = third
 					)
 	);
 	
-	
+	/* unbindModel in 2nd level recursive */
+	$this->Complaint->recursive = 2;
+	$this->Complaint->CatDetail->unbindModel(array('hasMany' => array('Complaints')));
+	$this->Complaint->Reviews->unbindModel(array('belongsTo' => array('Complaint')));
 ?>
