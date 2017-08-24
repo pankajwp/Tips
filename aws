@@ -1,0 +1,30 @@
+sudo yum install php-mysql php56 php-xml php-mcrypt php-mbstring php-cli php-soap mysql httpd
+
+
+https://bobcares.com/blog/amazon-linux-php-5-6/2/
+
+We need to give permission..
+So type this command on putty screen
+
+sudo chown ec2-user /var/www/html
+
+upload file
+
+start server: sudo /etc/init.d/httpd restart
+
+installing mysql: sudo yum install mysql-server
+
+start mysql: sudo /etc/init.d/mysqld start
+
+create root ser: mysqladmin -u root password ''
+
+login as root user: mysql -u root -p
+
+
+insatl phpMyAdmin 4.7.0
+wget https://files.phpmyadmin.net/phpMyAdmin/4.7.4/phpMyAdmin-4.7.4-all-languages.tar.gz
+
+Extract it 
+tar -xzvf phpMyAdmin-4.7.4-all-languages.tar.gz -C /var/www/html
+
+
