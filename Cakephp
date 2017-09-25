@@ -345,6 +345,28 @@ the abhove wiil extract all the data arrays where title = third
 	}
 
 
+	public function login(){
+		if($this->Auth->login()){
+			$prevUser = $this->Cookie->read('allUsers');
+			if(!empty($prevUser)){
+				foreach($prevUser as $users){
+					if($users['id'] !== $this->Auth->User('id')){
+						$count = count($prevUser);
+						$usersData[$count] = $this->Auth->User();
+						$usersData = $prevUser + $usersData;
+					}else{
+						$usersData = $prevUser;
+					}
+				}
+			}else{
+				$usersData[0] = $this->Auth->User();
+			}
+			$this->Cookie->write("allUsers", $usersData, Router::url('/', true), '1 Days');
+			return $this->redirect(['action'=>'profile']);
+		}
+	}
+
+
 ?>
 
 
