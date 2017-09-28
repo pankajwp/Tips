@@ -2,4 +2,4 @@ wget -O http://www.yourdomain.com/whmcspath/crons/cron.php >/dev/null
 
 php -q /path/to/home/public_html/whmcspath/crons/cron.php 
 
-GET http://www.yourdomain.com/whmcspath/crons/cron.php 
+GET http://www.yourdomain.com/whmcspath/crons/cron.php   -> Works on demo-7.com
