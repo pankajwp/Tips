@@ -369,4 +369,9 @@ the abhove wiil extract all the data arrays where title = third
 
 ?>
 
+<td><?php if($this->Paginator->params()['page'] == 1)
+  {echo $key+1;}else{
+  echo ($this->Paginator->params()['page'] -1) * $this->Paginator->params()['limit'] + ($key + 1);
+  }
+?></td>
 
