@@ -72,5 +72,5 @@ $ sudo service httpd restart
 
 /************************ Install new php extention like mbstring **********************************/
 
-
-
+/* How to set up your own email server using AWS */
+https://speedkills.io/email-server-aws/
