@@ -16,3 +16,34 @@ function mailer_config($mailer){
   $mailer->SMTPDebug = 0; // write 2 if you want to see client/server communication in page or errors
   // $mailer->CharSet  = "utf-8";
 }
+
+
+class Custom_Walker_Nav_Menu_top extends Walker_Nav_Menu
+{
+    function start_el( &$output, $item, $depth = 2, $args = array(), $id = 0 ) {
+			// pr($item);
+        $is_current_item = $extra_classes = '';
+        if(array_search('current-menu-item', $item->classes) != 0)
+        {
+            $is_current_item = ' class="active"';
+        }
+				// pr($item->classes);
+				if($item->classes[0] != '')
+        {
+            $extra_classes = $item->classes[0].' ';
+        }
+				if($item->classes[1] != '')
+        {
+            $extra_classes .= $item->classes[1].' ';
+        }
+				if($item->classes[2] != '')
+        {
+            $extra_classes .= $item->classes[2];
+        }
+        echo '<li class="'.$extra_classes.'"><a href="'.$item->url.'" '.$is_current_item.'>'.$item->title;
+    }
+
+    function end_el( &$output, $item, $depth = 0, $args = array() ) {
+        echo '</a></li>';
+    }
+}
