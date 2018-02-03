@@ -374,4 +374,15 @@ the abhove wiil extract all the data arrays where title = third
   echo ($this->Paginator->params()['page'] -1) * $this->Paginator->params()['limit'] + ($key + 1);
   }
 ?></td>
+/***** belongs to with different column name cakephp ****/
+class Comment extends AppModel {
+    public $belongsTo = array(
+        'Profile' => array(
+            'foreignKey' => false,
+             'conditions' => array(
+                 'Comment.username = Profile.username'
+             ),
+        )
+    );
+}
 
