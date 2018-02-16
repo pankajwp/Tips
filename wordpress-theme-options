@@ -1,5 +1,10 @@
+/*
+
+* Call by using <?php echo $email = myprefix_get_theme_option( 'email' );?>
+
+*/
 /**
- * ############################# Theme Options Panel ####################################
+ * ############################# Theme Options Panel add in functions.php ####################################
  *
  */
 
