@@ -1,0 +1,336 @@
+/**
+ * ############################# Theme Options Panel ####################################
+ *
+ */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Start Class
+if ( ! class_exists( 'GUT_Theme_Options' ) ) {
+
+	class GUT_Theme_Options {
+
+		/**
+		 * Start things up
+		 *
+		 * @since 1.0.0
+		 */
+		public function __construct() {
+
+			// We only need to register the admin panel on the back-end
+			if ( is_admin() ) {
+				add_action( 'admin_menu', array( 'GUT_Theme_Options', 'add_admin_menu' ) );
+				add_action( 'admin_init', array( 'GUT_Theme_Options', 'register_settings' ) );
+				add_action( 'admin_enqueue_scripts', array( 'GUT_Theme_Options', 'load_jquery_ui_tabs' ) );
+				add_action( 'in_admin_footer', array( 'GUT_Theme_Options', 'tab_call' ) );
+				add_action('admin_footer', array( 'GUT_Theme_Options', 'media_image_upload' ));
+				add_action('admin_enqueue_scripts', array( 'GUT_Theme_Options', 'media_image_upload_scripts' ));
+
+			}
+
+		}
+		
+		public function media_image_upload()
+		{?>			
+			<script>
+        jQuery(document).ready(function($){
+
+            var custom_uploader
+              , click_elem = jQuery('.wpse-228085-upload')
+              , target = jQuery('.form-table tbody tr td input[name="theme_options[footer_logo]"]')
+
+            click_elem.click(function(e) {
+                e.preventDefault();
+                //If the uploader object has already been created, reopen the dialog
+                if (custom_uploader) {
+                    custom_uploader.open();
+                    return;
+                }
+                //Extend the wp.media object
+                custom_uploader = wp.media.frames.file_frame = wp.media({
+                    title: 'Choose Image',
+                    button: {
+                        text: 'Choose Image'
+                    },
+                    multiple: false
+                });
+                //When a file is selected, grab the id and set it as the text field's value
+                custom_uploader.on('select', function() {
+                    attachment = custom_uploader.state().get('selection').first().toJSON();
+										console.log(attachment);
+                    target.val(attachment.id);
+                });
+                //Open the uploader dialog
+                custom_uploader.open();
+            });      
+        });
+			</script>
+		<?php }
+		
+		public function media_image_upload_scripts()
+		{
+			/*
+			if possible try not to queue this all over the admin by adding your settings GET page val into next
+			if( empty( $_GET['page'] ) || "my-settings-page" !== $_GET['page'] ) { return; }
+			*/
+			wp_enqueue_media();
+		}
+		
+		public function tab_call()
+		{?>
+			<script>
+				jQuery( document ).ready( function( $ ) {
+					$('#tabs').tabs();
+				} );
+			</script>
+		<?php }
+		
+		/**
+		 * Returns all theme options
+		 *
+		 * @since 1.0.0
+		 */
+		public static function get_theme_options() {
+			return get_option( 'theme_options' );
+		}
+		
+		/**
+		 * Load Jquery UI tabs to theme options
+		 *
+		 * @since 1.0.0
+		 */
+		function load_jquery_ui_tabs() {
+			wp_enqueue_script('jquery-ui-tabs');
+			wp_register_style('jquery-ui-css', get_template_directory_uri() . '/css/admin/jquery-ui.css', false, null);
+			wp_enqueue_style('jquery-ui-css');
+		}
+
+		/**
+		 * Returns single theme option
+		 *
+		 * @since 1.0.0
+		 */
+		public static function get_theme_option( $id ) {
+			$options = self::get_theme_options();
+			if ( isset( $options[$id] ) ) {
+				return $options[$id];
+			}
+		}
+
+		/**
+		 * Add sub menu page
+		 *
+		 * @since 1.0.0
+		 */
+		public static function add_admin_menu() {
+			add_menu_page(
+				esc_html__( 'Theme Settings', 'bst' ),
+				esc_html__( 'Theme Settings', 'bst' ),
+				'manage_options',
+				'theme-settings',
+				array( 'GUT_Theme_Options', 'create_admin_page' ),
+				'dashicons-star-filled'
+			);
+		}
+
+		/**
+		 * Register a setting and its sanitization callback.
+		 *
+		 * We are only registering 1 setting so we can store all options in a single option as
+		 * an array. You could, however, register a new setting for each option
+		 *
+		 * @since 1.0.0
+		 */
+		public static function register_settings() {
+			register_setting( 'theme_options', 'theme_options', array( 'GUT_Theme_Options', 'sanitize' ) );
+		}
+
+		/**
+		 * Sanitization callback
+		 *
+		 * @since 1.0.0
+		 */
+		public static function sanitize( $options ) {
+
+			// If we have options lets sanitize them
+			if ( $options ) {			
+					// pr($options);die;
+				// Input				
+				
+				if ( ! empty( $options['skype'] ) ) {
+					$options['skype'] = sanitize_text_field( $options['skype'] );
+				} else {
+					unset( $options['skype'] ); // Remove from options if empty
+				}
+				
+				if ( ! empty( $options['google_plus'] ) ) {
+					$options['google_plus'] = sanitize_text_field( $options['google_plus'] );
+				} else {
+					unset( $options['google_plus'] ); // Remove from options if empty
+				}
+				
+				if ( ! empty( $options['facebook'] ) ) {
+					$options['facebook'] = sanitize_text_field( $options['facebook'] );
+				} else {
+					unset( $options['facebook'] ); // Remove from options if empty
+				}
+				
+				
+
+			}
+
+			// Return sanitized options
+			return $options;
+
+		}
+
+		/**
+		 * Settings page output
+		 *
+		 * @since 1.0.0
+		 */
+		public static function create_admin_page() { ?>
+			<div class="wrap">
+				<h1><?php esc_html_e( 'Theme Options', 'bst' ); ?></h1>
+				<form method="post" action="options.php">
+
+					<?php settings_fields( 'theme_options' ); ?>
+						<div id="tabs">
+						<ul>
+							<li><a href="#general-1">General</a></li>
+							<li><a href="#social-2">Social</a></li>							
+						</ul>
+						<div id="general-1">
+							<table class="form-table gut-custom-admin-login-table">
+								
+								<!--<tr valign="top">
+									<th scope="row"><?php //esc_html_e( 'Footer logo', 'bst' ); ?></th>
+									<td>
+										<?php //$value = self::get_theme_option( 'footer_logo' ); 
+										//$footer_logo = wp_get_attachment_image_src($value, 'full');
+										?>
+										<img src="<?php //echo $footer_logo[0];?>" style="height: 36px; width: auto; border: 2px solid #c6c6c6;"/>
+										<input type="hidden" value="<?php //echo esc_attr( $value ); ?>" name="theme_options[footer_logo]" />
+										<span class="button wpse-228085-upload"><?php //echo ($value == '')?'Upload':'Upload New';?></button>
+									</td>
+								</tr>-->
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Email', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'email' ); ?>
+										<input style="width: 50%;" type="email" name="theme_options[email]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Phone', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'phone' ); ?>
+										<input style="width: 50%;" type="text" name="theme_options[phone]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Second Number', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'phone_second' ); ?>
+										<input style="width: 50%;" type="text" name="theme_options[phone_second]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Address(Html tags)', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'address' ); ?>
+										<textarea rows="5" style="width: 50%;" name="theme_options[address]"><?php echo esc_attr( $value ); ?></textarea>
+									</td>
+								</tr>	
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Availability(Html tags)', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'availability' ); ?>
+										<textarea rows="5" style="width: 50%;" name="theme_options[availability]"><?php echo esc_attr( $value ); ?></textarea>
+									</td>
+								</tr>	
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Copy Right Text(Html tags)', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'footer_copyright' ); ?>
+										<input style="width: 50%;" type="text" name="theme_options[footer_copyright]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>						
+						
+							</table>
+						</div>
+						<div id="social-2">
+							<table class="form-table gut-custom-admin-login-table">								
+								
+								<?php // Text input example ?>
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Twitter', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'twitter' ); ?>
+										<input style="width: 50%;" type="url" name="theme_options[twitter]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Google +', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'google_plus' ); ?>
+										<input style="width: 50%;" type="url" name="theme_options[google_plus]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Linked In', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'linkedin' ); ?>
+										<input style="width: 50%;" type="url" name="theme_options[linkedin]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>
+								
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Facebook', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'facebook' ); ?>
+										<input style="width: 50%;" type="url" name="theme_options[facebook]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>	
+
+								<tr valign="top">
+									<th scope="row"><?php esc_html_e( 'Skype', 'bst' ); ?></th>
+									<td>
+										<?php $value = self::get_theme_option( 'skype' ); ?>
+										<input style="width: 50%;" type="text" name="theme_options[skype]" value="<?php echo esc_attr( $value ); ?>">
+									</td>
+								</tr>								
+								
+							</table>
+						</div>
+
+					</div>
+					
+
+					<?php submit_button(); ?>
+
+				</form>
+
+			</div><!-- .wrap -->
+		<?php }
+
+	}
+}
+new GUT_Theme_Options();
+
+// Helper function to use in your theme to return a theme option value
+function myprefix_get_theme_option( $id = '' ) {
+	return GUT_Theme_Options::get_theme_option( $id );
+}
+
+####################### end:Theme options ####################################
