@@ -19,7 +19,7 @@ RewriteBase /
 ###### starts:FOR cakephp redirect http to https(Use in .htaccess of websroot folder) #################
 	RewriteEngine On
 	RewriteCond %{SERVER_PORT} 80 
-	RewriteRule ^(.*)$ https://www.expercio.com/$1 [R,L],  exper1u6, Pdg@64!2
+	RewriteRule ^(.*)$ https://www.expercio.com/$1 [R,L],
 ###### ends:FOR cakephp redirect http to https #################
 
 
