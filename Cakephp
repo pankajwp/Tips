@@ -386,3 +386,6 @@ class Comment extends AppModel {
     );
 }
 
+/**** Generate random alpha numeric string *****/
+substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $strinLength);;
+
