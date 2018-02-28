@@ -203,7 +203,7 @@ function serverMail($to,$from,$subject,$content='',$template='default')
     ->emailFormat('html')
     ->to($to)
     ->viewVars(array('content' =>$content))  // passing content variable to email template
-    ->from(array('info@demo-7.com' =>$from)) // specify the domain name using
+    ->from(array('info@test.com' =>$from)) // specify the domain name using
     ->subject($subject)
     ->send();
 	}	
