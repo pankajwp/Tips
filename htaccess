@@ -1,15 +1,5 @@
 RewriteEngine On
 
-RewriteBase /
-
-## RewriteRule ^(.*)\.html$ $1.php [L]
-
-Redirect 301 /index.html /index.php
-Redirect 301 /inicio.html /inicio.php
-Redirect 301 /promociones.html /promociones.php
-Redirect 301 /contacto.html /contacto.php
-
-
 
 /**************
 RewriteEngine On
@@ -19,7 +9,7 @@ RewriteBase /
 ###### starts:FOR cakephp redirect http to https(Use in .htaccess of websroot folder) #################
 	RewriteEngine On
 	RewriteCond %{SERVER_PORT} 80 
-	RewriteRule ^(.*)$ https://www.expercio.com/$1 [R,L],
+	RewriteRule ^(.*)$ https://www.yoursite.com/$1 [R,L],
 ###### ends:FOR cakephp redirect http to https #################
 
 
@@ -37,22 +27,6 @@ RewriteRule .* - [L,R=404]
 ***************/
 
 /**************
-
-# opening pachuca.php page without .php extension
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{DOCUMENT_ROOT}/pachuca.php  -f
-RewriteRule ^(.*)$     pachuca.php  [NS,L]
-***************/
-
-/************************
-# To externally redirect pachuca.php to pachuca
-RewriteCond %{THE_REQUEST} \s/+(pachuca)\.php[\s?] [NC]
-RewriteRule ^ /%1 [R=302,L,NE]
-
-# To internally forward pachuca to pachuca.php
-RewriteRule ^(pachuca)/?$ $1.php [L,NC]
 
 ************************/
 
@@ -138,6 +112,3 @@ RewriteRule ^(pachuca)/?$ $1.php [L,NC]
 /* For “Configure entity tags (ETags)” on YSlow */
 # ETAGS
 FileETag none
-
-
-
