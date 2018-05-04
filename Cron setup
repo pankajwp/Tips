@@ -5,3 +5,11 @@ php -q /path/to/home/public_html/whmcspath/crons/cron.php
 GET http://www.yourdomain.com/whmcspath/crons/cron.php   
 
 wget -O - -q "http://localhost/url/to/your/controller/action"
+
+
+******************** For setting up schedule task on Windows *************************
+1: Open task Scheduler
+2: On the right create a basic task
+3: Enter name of task slect trigger option
+4: On Action - Start a programme -> powershell in (Prog/Script) -> Add argumenst -> -ExecutionPolicy unrestricted -Command "(New-Object Net.WebClient).DownloadString(\"http://localhost/projectUrlToRun\")"
+5: Finish
