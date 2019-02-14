@@ -270,28 +270,31 @@ for(j=0; j< sd.length; j++){
 console.log(sd) */
 
 
+// const names = ['John', 'Paul', 'John', 'George', 'Ringo'];
+
+// function removeDups(names) {
+  // let unique = {}
+	// names.forEach((i) => {
+		// if(!unique[i]){
+			// unique[i] = true
+		// }		
+	// })
+	// return Object.keys(unique)
+// }
+
+// console.log(removeDups(names));
 
 
-/* var ob = {first:[23,45,676], second:[344,54,545]}
-var newObj = {third:[34,556,65]}
-var newObjr = {thirdData:[3455,55,65]}
-var keyToDelete = 'thirdData'
-Object.assign(ob, newObj, newObjr)
-var value =  Object.values(ob)
-delete ob[keyToDelete]
-var found = value.some(function(eachVal){
-	var found = eachVal.find(function(val){
-		return val == 556
+
+/* var http = require('http')
+var server = http.createServer(function(req, res){
+		res.writeHead(200, {'Content-type':'text/html'});
+		res.write("<h1>Hello</h1>/n <h2>Hi</h2>")
+		res.end();
 	})
-	return found
-})
-console.log(found)	 */
-
-/* var obj = {'0-row': ['23','45','54'], '1-row': ['45','66']}
-console.log(obj)
-var newObj = {}
-obj['0-row'] = ['333', '444']
-console.log(obj) */
+server.listen(5000, '127.0.0.1')
+console.log('start')
+ */
 
 
 
