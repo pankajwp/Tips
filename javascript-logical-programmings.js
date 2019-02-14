@@ -249,9 +249,49 @@ var re = ucFirst(str)
 console.log(re) */
 
 
+/* // Write a Program for Bubble sorting //
+var sd = [7,44,23,200, 2]
+var sdStr = ['0','0','0','0', '1', '1', '1']
+var newSd = sdStr.map(function(val){
+	return parseInt(val)
+})
+console.log(newSd)
+
+
+for(j=0; j< sd.length; j++){
+	for(i=0; i < sd.length; i++){
+			if(sd[i] < sd[i + 1]){
+				var t =  sd[i]
+				sd[i] =  sd[i + 1]
+				sd[i + 1] = t				
+			}		
+	}
+}
+console.log(sd) */
 
 
 
+
+/* var ob = {first:[23,45,676], second:[344,54,545]}
+var newObj = {third:[34,556,65]}
+var newObjr = {thirdData:[3455,55,65]}
+var keyToDelete = 'thirdData'
+Object.assign(ob, newObj, newObjr)
+var value =  Object.values(ob)
+delete ob[keyToDelete]
+var found = value.some(function(eachVal){
+	var found = eachVal.find(function(val){
+		return val == 556
+	})
+	return found
+})
+console.log(found)	 */
+
+/* var obj = {'0-row': ['23','45','54'], '1-row': ['45','66']}
+console.log(obj)
+var newObj = {}
+obj['0-row'] = ['333', '444']
+console.log(obj) */
 
 
 
