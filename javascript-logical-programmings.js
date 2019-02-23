@@ -270,6 +270,22 @@ for(j=0; j< sd.length; j++){
 console.log(sd) */
 
 
+/* ///////////// find duplicates in an array with O(n) complexity
+function getDuplicates(arr) {
+	 uniqueArray = arr.filter(function(item, pos) {
+			return arr.indexOf(item) == pos;
+	})
+	return uniqueArray
+}
+
+console.log(getDuplicates([1,2,3, 32, 3, 2,1]))
+													
+-------------- EXPLANATION -------------
+indexOf returns just one integer value, and it is the index of the first found item. So, when pos is 4 (and the item is 3), indexOf will return 4 (because the first index of 3 is 2), 2==4 is false and the element will be removed.
+
+Then, when the pos is 5 (and item is 2), indexOf returns 1, i.e,  the index of the first found 2. */
+
+
 // const names = ['John', 'Paul', 'John', 'George', 'Ringo'];
 
 // function removeDups(names) {
